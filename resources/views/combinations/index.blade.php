@@ -5,9 +5,9 @@
         @csrf
         <div class="grid md:grid-cols-3 md:gap-6">
             <div class="relative z-0 mb-6 w-full group">
-                <x-multiselect />
+                <x-multiselect :name="'items'" :items="$food_items" />
                 @if ($errors->has('name'))
-                    <span class="text-red-500">{{ $errors->first('name') }}</span>
+                    <span class="text-red-500">{{ $errors->first('alias') }}</span>
                 @endif
             </div>
 
@@ -24,8 +24,9 @@
                     <span class="text-red-500">{{ $errors->first('name') }}</span>
                 @endif
             </div>
+
             <div class="relative z-0 mb-6 w-full group">
-                <input type="text" name="name" id="description"
+                <input type="text" name="description" id="description"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" ">
                 <label for="description"
@@ -36,7 +37,7 @@
                     <span class="text-red-500">{{ $errors->first('name') }}</span>
                 @endif
             </div>
-
         </div>
+        <button class="btn bg-blue-400 text-white p-2 hover:bg-blue-500 rounded-sm float-right">Submit</button>
     </form>
 @endsection

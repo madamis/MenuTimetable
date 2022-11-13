@@ -14,10 +14,10 @@ class multiselect extends Component
      */
     public $items;
 
-    public function __construct()
+    public function __construct($items)
     {
         //
-        $this->items = "";
+        $this->items = $items;
     }
 
     /**

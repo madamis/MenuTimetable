@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Combination;
+use App\Models\FoodItem;
 
 class CombinationsController extends Controller
 {
@@ -14,8 +15,12 @@ class CombinationsController extends Controller
      */
     public function index()
     {
+        $food_items = FoodItem::select("name as label","id as value")->get();
+
+        $food_items = json_encode($food_items);
+        
         $combinations = Combination::all();
-        return view("combinations.index", compact('combinations'));
+        return view("combinations.index", compact('combinations','food_items'));
     }
 
     /**
@@ -36,7 +41,7 @@ class CombinationsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
