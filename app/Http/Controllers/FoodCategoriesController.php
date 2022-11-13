@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Slot;
+use App\Models\FoodCategory;
 
-class SlotsController extends Controller
+class FoodCategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class SlotsController extends Controller
      */
     public function index()
     {
-        $slots = Slot::all();
-        return view('slots.index', compact('slots'));
+        $foodcategories = FoodCategory::all();
+        return view('categories.index', compact('foodcategories'));
     }
 
     /**
@@ -37,11 +37,11 @@ class SlotsController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'=>'required|min:4',
+            'name'=>'required',
             'description'=>'required'
         ]);
-        $new_slot = slot::create($data);
-        return redirect('/slots')->with('message',['type'=>'bg-green-500','body'=>'Created successifully']);
+        $foodcatregory = FoodCategory::create($data);
+        return redirect('/foodcategories');
     }
 
     /**
@@ -50,9 +50,9 @@ class SlotsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Slot $slot)
+    public function show(FoodCategory $foodcategory)
     {
-        return json_encode($slot);
+        return json_encode($foodcategory);
     }
 
     /**
@@ -73,18 +73,16 @@ class SlotsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Slot $slot)
+    public function update(Request $request, FoodCategory $foodcategory)
     {
         $data = $request->validate([
-            'name'=>'required|min:4',
+            'name'=>'required',
             'description'=>'required'
         ]);
-        $slot->name = $data['name'];
-        $slot->description = $data['description'];
-        if($slot->save()){
-            return redirect('/slots')->with('message','success');
-        }else{
-            return redirect('/slots')->with('message','failed');
+        if($foodcategory->update($data))
+        {
+            //redirect with success
+            return redirect('/foodcategories')->with('message','success');
         }
     }
 
@@ -94,11 +92,9 @@ class SlotsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Slot $slot)
+    public function destroy(FoodCategory $foodcategory)
     {
-        if($slot->delete()){
-            return redirect('/slots')->with('message','Deleted');
-        }
-        return redirect('/slots')->with('message','Failed to delete');
+        $foodcategory->delete();
+        return redirect('/foodcategories');
     }
 }

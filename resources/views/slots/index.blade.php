@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <form class="p-3 my-4 rounded-md bg-white" method="post" action="/days">
+    <form class="p-3 my-4 rounded-md bg-white" method="post" action="/slots" autocomplete="off">
         @csrf
         <div class="grid md:grid-cols-2 md:gap-6">
             <div class="relative z-0 mb-6 w-full group">
@@ -42,7 +42,7 @@
                             Serial
                         </th>
                         <th scope="col" class="py-3 px-6">
-                            Dayname
+                            slotname
                         </th>
                         <th scope="col" class="py-3 px-6">
                             Description
@@ -51,23 +51,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($days as $day)
+                    @foreach ($slots as $slot)
                         <tr class="bg-white odd:bg-gray-200 border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row"
                                 class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $loop->iteration }}
                             </th>
                             <td class="py-4 px-6">
-                                {{ $day->name }}
+                                {{ $slot->name }}
                             </td>
                             <td class="py-4 px-6">
-                                {{ $day->description }}
+                                {{ $slot->description }}
                             </td>
                             <td>
-                                <button @click="showEditModal({{ $day->id }})"
+                                <button @click="showEditModal({{ $slot->id }})"
                                     class="bg-blue-500 text-white px-2 py-1 rounded-md"> Edit
                                 </button>
-                                <button @click="showDeleteModal({{ $day->id }})"
+                                <button @click="showDeleteModal({{ $slot->id }})"
                                     class="bg-red-700 text-white rounded px-2 py-1">
                                     Delete </button>
                             </td>
@@ -111,13 +111,13 @@
                         Add your teammate to your team and start work to get things done
                     </p>
 
-                    <form class="mt-5" :action="'days/' + day_id" method="post">
+                    <form class="mt-5" :action="'slots/' + slot_id" method="post">
                         @csrf
                         @method('put')
                         <div>
                             <label for="user name" class="block text-sm text-gray-700 capitalize dark:text-gray-200">Short
                                 name</label>
-                            <input x-model="day.name" name="name" placeholder="Name" type="text"
+                            <input x-model="slot.name" name="name" placeholder="Name" type="text"
                                 class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40">
                             <span x-show="emptyName" class="text-red-500 mt-2">Name field is required </span>
                         </div>
@@ -125,7 +125,7 @@
                         <div class="mt-4">
                             <label for="email" class="block text-sm text-gray-700 capitalize dark:text-gray-200">Full
                                 name</label>
-                            <input x-model="day.description" name="description" placeholder="Description" type="text"
+                            <input x-model="slot.description" name="description" placeholder="Description" type="text"
                                 class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40">
                             <span x-show="emptyDescription" class="text-red-500 mt-2">Description field is required
                             </span>
@@ -160,7 +160,7 @@
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
                     <div class="flex items-center justify-between space-x-4">
-                        <h1 class="text-xl font-medium text-gray-800 text-center">Delete Day</h1>
+                        <h1 class="text-xl font-medium text-gray-800 text-center">Delete slot</h1>
 
                         <button @click="toggleDelete" class="text-gray-600 focus:outline-none hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
@@ -179,9 +179,9 @@
                         </svg>
                         <h3 class="mb-5 text-lg font-normal text-red-500 dark:text-gray-400">Are you sure you want to
                             delete
-                            <b><span x-text="day.name"></span>?</b>
+                            <b><span x-text="slot.name"></span>?</b>
                         </h3>
-                        <form :action="'/days/' + day_id" method="post">
+                        <form :action="'/slots/' + slot_id" method="post">
                             @csrf
                             @method('delete')
                             <button type="submit"
@@ -204,11 +204,11 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('menuSystem', () => ({
                 openDelete: false,
-                day: {
+                slot: {
                     name: '',
                     description: ''
                 },
-                day_id: null,
+                slot_id: null,
                 editOpen: false,
 
                 toggleEditOpen() {
@@ -219,30 +219,30 @@
                     this.openDelete = !this.openDelete
                 },
 
-                async getDay(id) {
-                    this.day_id = id;
-                    await fetch(`/days/${this.day_id}`)
+                async getslot(id) {
+                    this.slot_id = id;
+                    await fetch(`/slots/${this.slot_id}`)
                         .then((response) => response.json())
-                        .then((data) => this.day = data);
+                        .then((data) => this.slot = data);
                 },
 
                 showEditModal(id) {
-                    this.getDay(id)
+                    this.getslot(id)
                     // set values 
                     this.toggleEditOpen()
                 },
 
                 showDeleteModal(id) {
-                    this.getDay(id)
+                    this.getslot(id)
                     this.toggleDelete()
                 },
 
                 emptyName() {
-                    return this.day.name === ""
+                    return this.slot.name === ""
                 },
 
                 emptyDescription() {
-                    return this.day.description === ""
+                    return this.slot.description === ""
                 },
 
                 disabledSave() {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\FoodItem;
 
 class FoodItemsController extends Controller
 {
@@ -13,7 +14,8 @@ class FoodItemsController extends Controller
      */
     public function index()
     {
-        //
+        $fooditems = FoodItem::all();
+        return view('items.index', compact('fooditems'));
     }
 
     /**
@@ -34,7 +36,20 @@ class FoodItemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name'=>'required',
+            'description'=>'required'
+        ]);
+        $item = FoodItem::create($data);
+        return redirect('/fooditems')->with('message', 'suceess');
+        // if($fooditem->save())
+        // {
+        //     return redirect('/fooditems.index')->with('message', 'suceess');
+        // }
+        // else
+        // {
+        //     return redirect('/fooditems.index')->with('message', 'failed');
+        // }
     }
 
     /**
@@ -43,9 +58,9 @@ class FoodItemsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(FoodItem $fooditem)
     {
-        //
+        return json_encode($fooditem);
     }
 
     /**
@@ -66,9 +81,17 @@ class FoodItemsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, FoodItem $fooditem)
     {
-        //
+        $data = $request->validate([
+            'name'=>'required',
+            'description'=>'required'
+        ]);
+        if ($fooditem->update($data)){
+            return redirect('/fooditems')->with('message','success');
+        }else{
+            return redirect('/fooditems')->with('message', 'failed');
+        }
     }
 
     /**
@@ -77,8 +100,15 @@ class FoodItemsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(FoodItem $fooditem)
     {
-        //
+        if($fooditem->delete())
+        {
+            return redirect('/fooditems')->with('message','deleted');
+        }
+        else
+        {
+            return redirect('/fooditems')->with('message','failed to delete');
+        }
     }
 }

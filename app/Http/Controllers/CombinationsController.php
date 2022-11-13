@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Combination;
 
 class CombinationsController extends Controller
 {
@@ -13,7 +14,8 @@ class CombinationsController extends Controller
      */
     public function index()
     {
-        //
+        $combinations = Combination::all();
+        return view("combinations.index", compact('combinations'));
     }
 
     /**

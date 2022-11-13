@@ -7,6 +7,11 @@
     @vite('resources/css/app.css')
     {{-- alpine --}}
     <script defer src="https://unpkg.com/alpinejs@3.10.3/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body class="h-full">
@@ -29,12 +34,12 @@
         </header>
 
         <main>
-            <div class="flex flex-row flex-wrap">
-                <div class="w-full sm:w-1/3 md:w-1/4 bg-white" aria-label="Sidebar">
+            <div class="flex flex-row flex-wrap h-screen">
+                <div class="w-full sm:w-1/3 md:w-1/4 bg-white min-h-full" aria-label="Sidebar">
                     <div class="py-4 px-3 dark:bg-gray-800">
                         <ul class="space-y-2">
                             <li>
-                                <a href="#"
+                                <a href="/dashboard"
                                     class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <span class="ml-3">Dashboard</span>
                                 </a>
@@ -52,19 +57,19 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="/fooditems"
                                     class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <span class="ml-3">Food items</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="/foodcategories"
                                     class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <span class="ml-3">Food categories</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="/combinations"
                                     class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <span class="ml-3">Food combinations</span>
                                 </a>

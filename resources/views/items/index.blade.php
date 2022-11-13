@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <form class="p-3 my-4 rounded-md bg-white" method="post" action="/days">
+    <form class="p-3 my-4 rounded-md bg-white" method="post" action="/fooditems" autocomplete="off">
         @csrf
         <div class="grid md:grid-cols-2 md:gap-6">
             <div class="relative z-0 mb-6 w-full group">
@@ -8,8 +8,8 @@
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" ">
                 <label for="floating_first_name"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Short
-                    name</label>
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    Name</label>
                 @if ($errors->has('name'))
                     <span class="text-red-500">{{ $errors->first('name') }}</span>
                 @endif
@@ -19,15 +19,15 @@
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" ">
                 <label for="floating_last_name"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Full
-                    name</label>
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description</label>
                 @if ($errors->has('description'))
                     <span class="text-red-500">{{ $errors->first('description') }}</span>
                 @endif
             </div>
         </div>
         <button type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><i
+                class="fas fa-plus"></i> Add</button>
     </form>
 
     <div x-data="menuSystem">
@@ -42,7 +42,7 @@
                             Serial
                         </th>
                         <th scope="col" class="py-3 px-6">
-                            Dayname
+                            fooditemname
                         </th>
                         <th scope="col" class="py-3 px-6">
                             Description
@@ -51,23 +51,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($days as $day)
+                    @foreach ($fooditems as $fooditem)
                         <tr class="bg-white odd:bg-gray-200 border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row"
                                 class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $loop->iteration }}
                             </th>
                             <td class="py-4 px-6">
-                                {{ $day->name }}
+                                {{ $fooditem->name }}
                             </td>
                             <td class="py-4 px-6">
-                                {{ $day->description }}
+                                {{ $fooditem->description }}
                             </td>
                             <td>
-                                <button @click="showEditModal({{ $day->id }})"
+                                <button @click="showEditModal({{ $fooditem->id }})"
                                     class="bg-blue-500 text-white px-2 py-1 rounded-md"> Edit
                                 </button>
-                                <button @click="showDeleteModal({{ $day->id }})"
+                                <button @click="showDeleteModal({{ $fooditem->id }})"
                                     class="bg-red-700 text-white rounded px-2 py-1">
                                     Delete </button>
                             </td>
@@ -111,13 +111,13 @@
                         Add your teammate to your team and start work to get things done
                     </p>
 
-                    <form class="mt-5" :action="'days/' + day_id" method="post">
+                    <form class="mt-5" :action="'fooditems/' + fooditem_id" method="post">
                         @csrf
                         @method('put')
                         <div>
                             <label for="user name" class="block text-sm text-gray-700 capitalize dark:text-gray-200">Short
                                 name</label>
-                            <input x-model="day.name" name="name" placeholder="Name" type="text"
+                            <input x-model="fooditem.name" name="name" placeholder="Name" type="text"
                                 class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40">
                             <span x-show="emptyName" class="text-red-500 mt-2">Name field is required </span>
                         </div>
@@ -125,7 +125,8 @@
                         <div class="mt-4">
                             <label for="email" class="block text-sm text-gray-700 capitalize dark:text-gray-200">Full
                                 name</label>
-                            <input x-model="day.description" name="description" placeholder="Description" type="text"
+                            <input x-model="fooditem.description" name="description" placeholder="Description"
+                                type="text"
                                 class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40">
                             <span x-show="emptyDescription" class="text-red-500 mt-2">Description field is required
                             </span>
@@ -160,7 +161,7 @@
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
                     <div class="flex items-center justify-between space-x-4">
-                        <h1 class="text-xl font-medium text-gray-800 text-center">Delete Day</h1>
+                        <h1 class="text-xl font-medium text-gray-800 text-center">Delete fooditem</h1>
 
                         <button @click="toggleDelete" class="text-gray-600 focus:outline-none hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
@@ -179,9 +180,9 @@
                         </svg>
                         <h3 class="mb-5 text-lg font-normal text-red-500 dark:text-gray-400">Are you sure you want to
                             delete
-                            <b><span x-text="day.name"></span>?</b>
+                            <b><span x-text="fooditem.name"></span>?</b>
                         </h3>
-                        <form :action="'/days/' + day_id" method="post">
+                        <form :action="'/fooditems/' + fooditem_id" method="post">
                             @csrf
                             @method('delete')
                             <button type="submit"
@@ -204,11 +205,11 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('menuSystem', () => ({
                 openDelete: false,
-                day: {
+                fooditem: {
                     name: '',
                     description: ''
                 },
-                day_id: null,
+                fooditem_id: null,
                 editOpen: false,
 
                 toggleEditOpen() {
@@ -219,30 +220,30 @@
                     this.openDelete = !this.openDelete
                 },
 
-                async getDay(id) {
-                    this.day_id = id;
-                    await fetch(`/days/${this.day_id}`)
+                async getfooditem(id) {
+                    this.fooditem_id = id;
+                    await fetch(`/fooditems/${this.fooditem_id}`)
                         .then((response) => response.json())
-                        .then((data) => this.day = data);
+                        .then((data) => this.fooditem = data);
                 },
 
                 showEditModal(id) {
-                    this.getDay(id)
+                    this.getfooditem(id)
                     // set values 
                     this.toggleEditOpen()
                 },
 
                 showDeleteModal(id) {
-                    this.getDay(id)
+                    this.getfooditem(id)
                     this.toggleDelete()
                 },
 
                 emptyName() {
-                    return this.day.name === ""
+                    return this.fooditem.name === ""
                 },
 
                 emptyDescription() {
-                    return this.day.description === ""
+                    return this.fooditem.description === ""
                 },
 
                 disabledSave() {

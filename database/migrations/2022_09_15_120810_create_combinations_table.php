@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\FoodItem;
 
 return new class extends Migration
 {
@@ -15,8 +16,10 @@ return new class extends Migration
     {
         Schema::create('combinations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('descrition');
+            $table->integer('combination');
+            $table->foreignIdFor(FoodItem::class);
+            $table->string('alias')->nullable();
+            $table->string('descrition')->nullable();
             $table->timestamps();
         });
     }

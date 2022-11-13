@@ -42,7 +42,7 @@ class DaysController extends Controller
             'description'=>'required'
         ]);
         $new_day = Day::create($data);
-        return redirect('/days');
+        return redirect('/days')->with('message',['type'=>'bg-green-500','body'=>'Created successifully']);
     }
 
     /**
@@ -95,8 +95,12 @@ class DaysController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Day $day)
     {
         //
+        if($day->delete()){
+            return redirect('/days')->with('message','Deleted');
+        }
+        return redirect('/days')->with('message','Failed to delete');
     }
 }
